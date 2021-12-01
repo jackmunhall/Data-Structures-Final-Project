@@ -1,4 +1,5 @@
 import csv
+from funcs import *
 
 players = {}
 
@@ -7,7 +8,17 @@ with open("stats.csv") as file:
     reader = csv.reader(file)
 
     for row in reader:
-        players[row[1]] = row[2:]
+        temp = row[2:]
+        for i in range(0, len(temp)):
+            try:
+                temp[i] = float(temp[i])
+            except:
+                temp[i] = None
+
+        players[row[1]] = temp
 
 for p, v in players.items():
     print(p, v)
+
+test = calcWorth(players, "Tom Brady")
+print(test)
