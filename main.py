@@ -1,24 +1,32 @@
-import csv
 from funcs import *
 
-players = {}
+# Read in all stats
+playerStats = readPlayers("stats.csv", "draft.csv")
 
-# Rk	Player	Tm	FantPos	Age	G	GS	Cmp	Att	Yds	TD	Int	Att	Yds	Y/A	TD	Tgt	Rec	Yds	Y/R	TD	Fmb	FL	TD	2PM	2PP	FantPt	PPR	DKPt	FDPt	VBD	PosRank	OvRank
-with open("stats.csv") as file:
-    reader = csv.reader(file)
+# Get basic league info
+ppr = getBool()
+numTeams = int(input("Number of teams in the league: "))
+year = int(input("Current year: "))
+dynasty = getBool()
 
-    for row in reader:
-        temp = row[2:]
-        for i in range(0, len(temp)):
-            try:
-                temp[i] = float(temp[i])
-            except:
-                temp[i] = None
+# Package leage info
+leagueInfo = (ppr, numTeams, year, dynasty)
 
-        players[row[1]] = temp
+# Read in teams and calculate their worth
+team0 = readTeam("team0.csv", playerStats, leagueInfo)
+team1 = readTeam("team1.csv", playerStats, leagueInfo)
 
-for p, v in players.items():
-    print(p, v)
+print(team0)
+print(team1)
 
-test = calcWorth(players, "Tom Brady")
-print(test)
+# matches = dict.fromkeys(team1)
+
+# for player in team0:
+#     matchPlayer(player, matches, playerStats)
+
+# print("MATCHES")
+# for k, v in matches.items():
+#     if v:
+#         print("Trading", v[0], "for", k, "has a bias of", v[1])
+#     else:
+#         print(k, "has no match")
